@@ -74,9 +74,12 @@ class CountriesFragment : Fragment() {
                     val countryJsonObject = countriesJsonArray.getJSONObject(i)
                     val country = Country(
                         name = countryJsonObject.getString("name"),
+/*
                         capital = countryJsonObject.getString("capital"),
+*/
+                        capital = if (countryJsonObject.isNull("capital")) "" else countryJsonObject.getString("capital"),
                         region = countryJsonObject.getString("region"),
-                        flag= "flag"
+                        flag= countryJsonObject.getString("flag")
                     )
                     countries.add(country)
                 }
