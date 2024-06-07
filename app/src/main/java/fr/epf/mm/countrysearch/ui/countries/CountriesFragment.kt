@@ -25,6 +25,7 @@ class CountriesFragment : Fragment() {
     private var _binding: FragmentCountriesBinding? = null
     private val binding get() = _binding!!
     private lateinit var countryAdapter: CountryAdapter
+    private var fullCountryList = listOf<Country>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +48,7 @@ class CountriesFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                val filteredList = countries.filter { it.name.contains(newText ?: "", ignoreCase = true) }
+                val filteredList = fullCountryList.filter { it.name.contains(newText ?: "", ignoreCase = true) }
                 countryAdapter.filterList(filteredList)
                 return false
             }
@@ -74,15 +75,13 @@ class CountriesFragment : Fragment() {
                     val countryJsonObject = countriesJsonArray.getJSONObject(i)
                     val country = Country(
                         name = countryJsonObject.getString("name"),
-/*
-                        capital = countryJsonObject.getString("capital"),
-*/
                         capital = if (countryJsonObject.isNull("capital")) "" else countryJsonObject.getString("capital"),
                         region = countryJsonObject.getString("region"),
                         flag= countryJsonObject.getString("flag")
                     )
                     countries.add(country)
                 }
+                fullCountryList = countries
                 countryAdapter = CountryAdapter(countries)
                 withContext(Dispatchers.Main) {
                     binding.countriesRecyclerView.adapter = countryAdapter
