@@ -3,6 +3,7 @@ package fr.epf.mm.countrysearch.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.epf.mm.countrysearch.R
 import fr.epf.mm.countrysearch.models.Country
@@ -17,9 +18,13 @@ class CountryAdapter(private var countries: List<Country>) : RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
-        val country = countries[position]
-        // Bind country data to the view
-    }
+    val country = countries[position]
+    // Assuming you have TextViews with the ids nameTextView, capitalTextView, continentTextView, and flagTextView in your country_item layout
+    holder.view.findViewById<TextView>(R.id.name_text_view).text = country.name
+    holder.view.findViewById<TextView>(R.id.capital_text_view).text = country.capital
+    holder.view.findViewById<TextView>(R.id.continent_text_view).text = country.region
+    // For flag, if it's a URL to an image, you might need to use an image loading library like Glide or Picasso
+}
 
     override fun getItemCount() = countries.size
 

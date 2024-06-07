@@ -8,9 +8,17 @@ import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import fr.epf.mm.countrysearch.adapters.CountryAdapter
 import fr.epf.mm.countrysearch.databinding.FragmentCountriesBinding
 import fr.epf.mm.countrysearch.models.Country
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import java.net.HttpURLConnection
+import java.net.URL
 
 class CountriesFragment : Fragment() {
 
@@ -24,6 +32,7 @@ class CountriesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCountriesBinding.inflate(inflater, container, false)
+        binding.countriesRecyclerView.layoutManager = LinearLayoutManager(context)
         val root: View = binding.root
 
         // Initialize the RecyclerView and the adapter
@@ -43,9 +52,50 @@ class CountriesFragment : Fragment() {
                 return false
             }
         })
-
         return root
     }
+
+    private fun fetchCountries() {
+    CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val url = "https://www.apicountries.com/countries"
+            val connection = URL(url).openConnection() as HttpURLConnection
+            connection.requestMethod = "GET"
+            connection.connectTimeout = 15000 // 15 seconds
+            connection.readTimeout = 15000 // 15 seconds
+            connection.connect()
+
+            if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                val response = connection.inputStream.bufferedReader().use { it.readText() }
+
+                val countriesJsonArray = JSONArray(response)
+                val countries = mutableListOf<Country>()
+                for (i in 0 until countriesJsonArray.length()) {
+                    val countryJsonObject = countriesJsonArray.getJSONObject(i)
+                    val country = Country(
+                        name = countryJsonObject.getString("name"),
+                        capital = countryJsonObject.getString("capital"),
+                        region = countryJsonObject.getString("region"),
+                        flag= "flag"
+                    )
+                    countries.add(country)
+                }
+                countryAdapter = CountryAdapter(countries)
+                withContext(Dispatchers.Main) {
+                    binding.countriesRecyclerView.adapter = countryAdapter
+                }
+            }
+        } catch (e: Exception) {
+            // Handle the exception
+            e.printStackTrace()
+        }
+    }
+}
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    fetchCountries()
+}
 
     override fun onDestroyView() {
         super.onDestroyView()
