@@ -12,14 +12,28 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_countries"
         android:name="fr.epf.mm.countrysearch.ui.countries.CountriesFragment"
         android:label="@string/title_countries"
-        tools:layout="@layout/fragment_countries" />
+        tools:layout="@layout/fragment_countries" >
+        <action
+            android:id="@+id/action_navigation_countries_to_countryDetailsFragment"
+            app:destination="@id/countryDetailsFragment" />
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_favorites"
         android:name="fr.epf.mm.countrysearch.ui.favorites.FavoritesFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites" />
+
+    <fragment
+    android:id="@+id/countryDetailsFragment"
+    android:name="fr.epf.mm.countrysearch.ui.countries.CountryDetailsFragment"
+    android:label="Country Details"
+    tools:layout="@layout/fragment_country_details" >
+    <argument
+        android:name="country"
+        app:argType="fr.epf.mm.countrysearch.models.Country" />
+</fragment>
 </navigation>

@@ -2,11 +2,13 @@ package fr.epf.mm.countrysearch.adapters
 
 import android.graphics.Picture
 import android.graphics.drawable.PictureDrawable
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.caverock.androidsvg.SVG
 import fr.epf.mm.countrysearch.R
@@ -34,6 +36,13 @@ class CountryAdapter(private var countries: List<Country>) : RecyclerView.Adapte
 
         val flagImageView = holder.view.findViewById<ImageView>(R.id.flag_image_view)
         loadSvg(flagImageView, country.flag)
+
+        holder.itemView.setOnClickListener {
+            val bundle = Bundle().apply {
+                putParcelable("country", country)
+            }
+            it.findNavController().navigate(R.id.action_navigation_countries_to_countryDetailsFragment, bundle)
+        }
     }
 
     private fun loadSvg(imageView: ImageView, url: String) {
