@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Country Search</string>
+    <string name="title_home">Home</string>
+    <string name="title_countries">Countries</string>
+    <string name="title_favorites">Favorites</string>
+    <string name="country_flag">country_flag</string>
+</resources>
