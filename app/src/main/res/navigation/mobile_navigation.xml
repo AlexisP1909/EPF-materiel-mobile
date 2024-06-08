@@ -35,5 +35,5 @@
     <argument
         android:name="country"
         app:argType="fr.epf.mm.countrysearch.models.Country" />
-</fragment>
+    </fragment>
 </navigation>
