@@ -4,4 +4,7 @@
     <string name="title_countries">Countries</string>
     <string name="title_favorites">Favorites</string>
     <string name="country_flag">country_flag</string>
+    <string name="save_to_favorites">Save to favorites</string>
+    <string name="remove_from_favorites">Remove from Favorites</string>
+    <string name="country_database">country-database</string>
 </resources>

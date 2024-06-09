@@ -25,7 +25,11 @@
         android:id="@+id/navigation_favorites"
         android:name="fr.epf.mm.countrysearch.ui.favorites.FavoritesFragment"
         android:label="@string/title_favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_navigation_countries_to_countryDetailsFragment"
+            app:destination="@id/countryDetailsFragment" />
+    </fragment>
 
     <fragment
     android:id="@+id/countryDetailsFragment"

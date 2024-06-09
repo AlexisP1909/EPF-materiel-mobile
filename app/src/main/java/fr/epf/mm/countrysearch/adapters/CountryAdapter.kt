@@ -6,13 +6,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.caverock.androidsvg.SVG
 import fr.epf.mm.countrysearch.R
+import fr.epf.mm.countrysearch.database.CountryDatabase
 import fr.epf.mm.countrysearch.models.Country
+import fr.epf.mm.countrysearch.models.CountryEntity
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -37,11 +42,41 @@ class CountryAdapter(private var countries: List<Country>) : RecyclerView.Adapte
         val flagImageView = holder.view.findViewById<ImageView>(R.id.flag_image_view)
         loadSvg(flagImageView, country.flag)
 
+
         holder.itemView.setOnClickListener {
             val bundle = Bundle().apply {
                 putParcelable("country", country)
             }
             it.findNavController().navigate(R.id.action_navigation_countries_to_countryDetailsFragment, bundle)
+        }
+
+        holder.view.findViewById<Button>(R.id.save_country_button).apply {
+            CoroutineScope(Dispatchers.IO).launch {
+                val db = Room.databaseBuilder(
+                    holder.view.context,
+                    CountryDatabase::class.java, context.getString(R.string.country_database)
+                ).build()
+                val count = db.countryDao().countCountryByName(country.name)
+                withContext(Dispatchers.Main) {
+                    if (count > 0) {
+                        visibility = View.GONE
+                    } else {
+                        visibility = View.VISIBLE
+                        setOnClickListener {
+                            val countryEntity = CountryEntity(
+                                id = 0, // Room will generate the id
+                                name = country.name,
+                                capital = country.capital,
+                                region = country.region,
+                                flag = country.flag
+                            )
+                            CoroutineScope(Dispatchers.IO).launch {
+                                db.countryDao().insert(countryEntity)
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -65,4 +100,6 @@ class CountryAdapter(private var countries: List<Country>) : RecyclerView.Adapte
         countries = filteredList
         notifyDataSetChanged()
     }
+
+
 }

@@ -24,6 +24,12 @@
         android:layout_height="wrap_content"
         android:textSize="18sp" />
 
-    <!-- Add an ImageView to display the flag -->
+    <!-- TODO Add an ImageView to display the flag -->
+
+    <Button
+    android:id="@+id/saveCountryButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/save_to_favorites" />
 
 </LinearLayout>
