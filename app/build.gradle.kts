@@ -66,4 +66,8 @@ dependencies {
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation(libs.androidx.room.ktx)
+    
+    // qrCode
+    implementation(libs.core)
+    implementation(libs.zxing.android.embedded)
 }

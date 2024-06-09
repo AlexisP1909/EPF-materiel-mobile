@@ -9,9 +9,9 @@ data class Country(
     val name: String,
     val capital: String,
     val region: String,
-    val population: Long, // new field for population
-    val language: String, // new field for language
-    val currency: String  // new field for currency
+    val population: Long,
+    val language: String,
+    val currency: String
 ) : Parcelable {
     override fun describeContents() = 0
 }

@@ -7,4 +7,6 @@
     <string name="save_to_favorites">Save to favorites</string>
     <string name="remove_from_favorites">Remove from Favorites</string>
     <string name="country_database">country-database</string>
+    <string name="generate_qr_code">Generate QR Code</string>
+    <string name="scan_qr_code">Scan QR Code</string>
 </resources>

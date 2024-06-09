@@ -10,9 +10,9 @@ data class CountryEntity(
     val capital: String,
     val region: String,
     val flag: String,
-    val population: Long, // new field for population
-    val language: String, // new field for language
-    val currency: String  // new field for currency
+    val population: Long,
+    val language: String,
+    val currency: String
 ) {
     fun toCountry(): Country {
         return Country(
@@ -20,9 +20,9 @@ data class CountryEntity(
             name = this.name,
             capital = this.capital,
             region = this.region,
-            population = this.population, // map the new field
-            language = this.language, // map the new field
-            currency = this.currency  // map the new field
+            population = this.population,
+            language = this.language,
+            currency = this.currency
         )
     }
 }

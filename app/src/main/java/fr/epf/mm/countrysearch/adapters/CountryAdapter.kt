@@ -1,5 +1,7 @@
 package fr.epf.mm.countrysearch.adapters
 
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.Picture
 import android.graphics.drawable.PictureDrawable
 import android.os.Bundle
@@ -13,6 +15,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.caverock.androidsvg.SVG
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.qrcode.QRCodeWriter
 import fr.epf.mm.countrysearch.R
 import fr.epf.mm.countrysearch.database.CountryDatabase
 import fr.epf.mm.countrysearch.database.MIGRATION_1_2
@@ -105,6 +109,23 @@ class CountryAdapter(private var countries: List<Country>) : RecyclerView.Adapte
     fun filterList(filteredList: List<Country>) {
         countries = filteredList
         notifyDataSetChanged()
+    }
+
+    fun generateQRCode(countries: List<CountryEntity>): Bitmap {
+        val writer = QRCodeWriter()
+        val countryData = countries.joinToString(separator = ";") {
+            "${it.name},${it.capital},${it.region},${it.flag},${it.population},${it.language},${it.currency}"
+        }
+        val bitMatrix = writer.encode(countryData, BarcodeFormat.QR_CODE, 200, 200)
+        val width = bitMatrix.width
+        val height = bitMatrix.height
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+        for (x in 0 until width) {
+            for (y in 0 until height) {
+                bitmap.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
+            }
+        }
+        return bitmap
     }
 
 

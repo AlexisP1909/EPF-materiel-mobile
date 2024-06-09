@@ -37,7 +37,7 @@ class CountriesFragment : Fragment() {
         val root: View = binding.root
 
         // Initialize the RecyclerView and the adapter
-        val countries = listOf<Country>() // Get the list of countries from your data source
+        val countries = listOf<Country>()
         countryAdapter = CountryAdapter(countries)
         binding.countriesRecyclerView.adapter = countryAdapter
 
@@ -62,8 +62,8 @@ class CountriesFragment : Fragment() {
             val url = "https://www.apicountries.com/countries"
             val connection = URL(url).openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
-            connection.connectTimeout = 15000 // 15 seconds
-            connection.readTimeout = 15000 // 15 seconds
+            connection.connectTimeout = 15000
+            connection.readTimeout = 15000
             connection.connect()
 
             if (connection.responseCode == HttpURLConnection.HTTP_OK) {
@@ -75,12 +75,12 @@ class CountriesFragment : Fragment() {
                     val countryJsonObject = countriesJsonArray.getJSONObject(i)
                     val country = Country(
                         name = countryJsonObject.getString("name"),
-                        capital = if (countryJsonObject.isNull("capital")) "" else countryJsonObject.getString("capital"),
+                        capital = if (countryJsonObject.isNull("capital")) "No information" else countryJsonObject.getString("capital"),
                         region = countryJsonObject.getString("region"),
                         flag= countryJsonObject.getString("flag"),
                         population = countryJsonObject.getLong("population"),
-                        language = if (countryJsonObject.isNull("language")) "" else countryJsonObject.getString("language"),
-                        currency = if (countryJsonObject.isNull("currency")) "" else countryJsonObject.getString("currency")
+                        language = if (countryJsonObject.isNull("language")) "No information" else countryJsonObject.getString("language"),
+                        currency = if (countryJsonObject.isNull("currency")) "No information" else countryJsonObject.getString("currency")
                     )
                     countries.add(country)
                 }
@@ -91,7 +91,6 @@ class CountriesFragment : Fragment() {
                 }
             }
         } catch (e: Exception) {
-            // Handle the exception
             e.printStackTrace()
         }
     }
