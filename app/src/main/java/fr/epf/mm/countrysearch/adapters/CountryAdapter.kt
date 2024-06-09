@@ -15,6 +15,7 @@ import androidx.room.Room
 import com.caverock.androidsvg.SVG
 import fr.epf.mm.countrysearch.R
 import fr.epf.mm.countrysearch.database.CountryDatabase
+import fr.epf.mm.countrysearch.database.MIGRATION_1_2
 import fr.epf.mm.countrysearch.models.Country
 import fr.epf.mm.countrysearch.models.CountryEntity
 import kotlinx.coroutines.CoroutineScope
@@ -55,7 +56,9 @@ class CountryAdapter(private var countries: List<Country>) : RecyclerView.Adapte
                 val db = Room.databaseBuilder(
                     holder.view.context,
                     CountryDatabase::class.java, context.getString(R.string.country_database)
-                ).build()
+                )
+                    .addMigrations(MIGRATION_1_2)
+                    .build()
                 val count = db.countryDao().countCountryByName(country.name)
                 withContext(Dispatchers.Main) {
                     if (count > 0) {
@@ -68,7 +71,10 @@ class CountryAdapter(private var countries: List<Country>) : RecyclerView.Adapte
                                 name = country.name,
                                 capital = country.capital,
                                 region = country.region,
-                                flag = country.flag
+                                flag = country.flag,
+                                population = country.population,
+                                language = country.language,
+                                currency = country.currency
                             )
                             CoroutineScope(Dispatchers.IO).launch {
                                 db.countryDao().insert(countryEntity)

@@ -77,7 +77,10 @@ class CountriesFragment : Fragment() {
                         name = countryJsonObject.getString("name"),
                         capital = if (countryJsonObject.isNull("capital")) "" else countryJsonObject.getString("capital"),
                         region = countryJsonObject.getString("region"),
-                        flag= countryJsonObject.getString("flag")
+                        flag= countryJsonObject.getString("flag"),
+                        population = countryJsonObject.getLong("population"),
+                        language = if (countryJsonObject.isNull("language")) "" else countryJsonObject.getString("language"),
+                        currency = if (countryJsonObject.isNull("currency")) "" else countryJsonObject.getString("currency")
                     )
                     countries.add(country)
                 }

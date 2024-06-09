@@ -35,7 +35,10 @@ class CountryDetailsViewModel(private val database: CountryDatabase) : ViewModel
                     name = country.name,
                     capital = country.capital,
                     region = country.region,
-                    flag = country.flag
+                    flag = country.flag,
+                    population = country.population,
+                    language = country.language,
+                    currency = country.currency
                 )
                 database.countryDao().insert(countryEntity)
             }

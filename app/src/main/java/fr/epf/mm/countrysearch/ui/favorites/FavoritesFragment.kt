@@ -11,6 +11,7 @@ import androidx.room.Room
 import fr.epf.mm.countrysearch.R
 import fr.epf.mm.countrysearch.adapters.CountryAdapter
 import fr.epf.mm.countrysearch.database.CountryDatabase
+import fr.epf.mm.countrysearch.database.MIGRATION_1_2
 import fr.epf.mm.countrysearch.databinding.FragmentFavoritesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,7 +46,9 @@ class FavoritesFragment : Fragment() {
             val db = Room.databaseBuilder(
                 requireContext(),
                 CountryDatabase::class.java, "country-database"
-            ).build()
+            )
+                .addMigrations(MIGRATION_1_2)
+                .build()
             val countryEntities = db.countryDao().getAll()
             val countries = countryEntities.map { it.toCountry() }
             withContext(Dispatchers.Main) {
