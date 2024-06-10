@@ -10,6 +10,7 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.room.Room
 import com.caverock.androidsvg.SVG
+import com.google.gson.Gson
 import fr.epf.mm.countrysearch.R
 import fr.epf.mm.countrysearch.database.CountryDatabase
 import fr.epf.mm.countrysearch.database.MIGRATION_1_2
@@ -42,8 +43,8 @@ class CountryDetailsFragment : Fragment() {
         binding.capitalTextView.text = country.capital
         binding.regionTextView.text = country.region
         binding.populationTextView.text = country.population.toString()
-        binding.languageTextView.text = country.language
-        binding.currencyTextView.text = country.currency
+        binding.languageTextView.text = country.languages.joinToString { it.name }
+        binding.currencyTextView.text = country.currencies.joinToString { it.name }
         loadSvg(binding.flagImageView, country.flag)
 
         val saveCountryButton = root.findViewById<Button>(R.id.saveCountryButton)
@@ -53,6 +54,7 @@ class CountryDetailsFragment : Fragment() {
                 CountryDatabase::class.java, getString(R.string.country_database)
             )
                 .addMigrations(MIGRATION_1_2)
+                .fallbackToDestructiveMigration()
                 .build()
             val countryDao = db.countryDao()
             val count = countryDao.countCountryByName(country.name)
@@ -77,8 +79,8 @@ class CountryDetailsFragment : Fragment() {
                             region = country.region,
                             flag = country.flag,
                             population = country.population,
-                            language = country.language,
-                            currency = country.currency
+                            languages = Gson().toJson(country.languages),
+                            currencies = Gson().toJson(country.currencies)
                         )
                         CoroutineScope(Dispatchers.IO).launch {
                             countryDao.insert(countryEntity)

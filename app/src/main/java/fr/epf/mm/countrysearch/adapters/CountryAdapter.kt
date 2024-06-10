@@ -15,6 +15,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.caverock.androidsvg.SVG
+import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import fr.epf.mm.countrysearch.R
@@ -62,6 +63,7 @@ class CountryAdapter(private var countries: List<Country>) : RecyclerView.Adapte
                     CountryDatabase::class.java, context.getString(R.string.country_database)
                 )
                     .addMigrations(MIGRATION_1_2)
+                    .fallbackToDestructiveMigration()
                     .build()
                 val count = db.countryDao().countCountryByName(country.name)
                 withContext(Dispatchers.Main) {
@@ -71,14 +73,14 @@ class CountryAdapter(private var countries: List<Country>) : RecyclerView.Adapte
                         visibility = View.VISIBLE
                         setOnClickListener {
                             val countryEntity = CountryEntity(
-                                id = 0, // Room will generate the id
+                                id = 0,
                                 name = country.name,
                                 capital = country.capital,
                                 region = country.region,
                                 flag = country.flag,
                                 population = country.population,
-                                language = country.language,
-                                currency = country.currency
+                                languages = Gson().toJson(country.languages),
+                                currencies = Gson().toJson(country.currencies)
                             )
                             CoroutineScope(Dispatchers.IO).launch {
                                 db.countryDao().insert(countryEntity)
@@ -113,8 +115,9 @@ class CountryAdapter(private var countries: List<Country>) : RecyclerView.Adapte
 
     fun generateQRCode(countries: List<CountryEntity>): Bitmap {
         val writer = QRCodeWriter()
+        val gson = Gson()
         val countryData = countries.joinToString(separator = ";") {
-            "${it.name},${it.capital},${it.region},${it.flag},${it.population},${it.language},${it.currency}"
+            gson.toJson(it)
         }
         val bitMatrix = writer.encode(countryData, BarcodeFormat.QR_CODE, 200, 200)
         val width = bitMatrix.width

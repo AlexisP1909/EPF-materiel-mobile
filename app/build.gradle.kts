@@ -70,4 +70,7 @@ dependencies {
     // qrCode
     implementation(libs.core)
     implementation(libs.zxing.android.embedded)
+
+    //json
+    implementation("com.google.code.gson:gson:2.8.8")
 }

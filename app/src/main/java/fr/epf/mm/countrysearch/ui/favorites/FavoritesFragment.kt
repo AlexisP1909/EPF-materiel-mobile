@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.google.gson.Gson
 import com.google.zxing.integration.android.IntentIntegrator
 import fr.epf.mm.countrysearch.R
 import fr.epf.mm.countrysearch.adapters.CountryAdapter
@@ -58,6 +59,7 @@ class FavoritesFragment : Fragment() {
                 CountryDatabase::class.java, "country-database"
             )
                 .addMigrations(MIGRATION_1_2)
+                .fallbackToDestructiveMigration()
                 .build()
             val countryEntities = db.countryDao().getAll()
             val countries = countryEntities.map { it.toCountry() }
@@ -74,6 +76,7 @@ class FavoritesFragment : Fragment() {
                     CountryDatabase::class.java, getString(R.string.country_database)
                 )
                     .addMigrations(MIGRATION_1_2)
+                    .fallbackToDestructiveMigration()
                     .build()
                 val countryDao = db.countryDao()
                 val countries = countryDao.getAll()
@@ -112,23 +115,14 @@ class FavoritesFragment : Fragment() {
                     CountryDatabase::class.java, getString(R.string.country_database)
                 )
                     .addMigrations(MIGRATION_1_2)
+                    .fallbackToDestructiveMigration()
                     .build()
                 val countryDao = db.countryDao()
+                val gson = Gson()
                 for (countryData in countryDataList) {
-                    val fields = countryData.split(",")
-                    val countryName = fields[0]
-                    val count = countryDao.countCountryByName(countryName)
+                    val countryEntity = gson.fromJson(countryData, CountryEntity::class.java)
+                    val count = countryDao.countCountryByName(countryEntity.name)
                     if (count == 0) {
-                        val countryEntity = CountryEntity(
-                            id = 0,
-                            name = countryName,
-                            capital = fields[1],
-                            region = fields[2],
-                            flag = fields[3],
-                            population = fields[4].toLong(),
-                            language = fields[5],
-                            currency = fields[6]
-                        )
                         countryDao.insert(countryEntity)
                     }
                 }

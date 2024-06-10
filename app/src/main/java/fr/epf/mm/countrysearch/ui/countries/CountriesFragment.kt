@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import fr.epf.mm.countrysearch.adapters.CountryAdapter
 import fr.epf.mm.countrysearch.databinding.FragmentCountriesBinding
 import fr.epf.mm.countrysearch.models.Country
+import fr.epf.mm.countrysearch.models.Currency
+import fr.epf.mm.countrysearch.models.Language
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -79,8 +81,35 @@ class CountriesFragment : Fragment() {
                         region = countryJsonObject.getString("region"),
                         flag= countryJsonObject.getString("flag"),
                         population = countryJsonObject.getLong("population"),
-                        language = if (countryJsonObject.isNull("language")) "No information" else countryJsonObject.getString("language"),
-                        currency = if (countryJsonObject.isNull("currency")) "No information" else countryJsonObject.getString("currency")
+                        languages = if (countryJsonObject.isNull("languages")) listOf() else {
+                            val languagesJsonArray = countryJsonObject.getJSONArray("languages")
+                            val languages = mutableListOf<Language>()
+                            for (j in 0 until languagesJsonArray.length()) {
+                                val languageJsonObject = languagesJsonArray.getJSONObject(j)
+                                val language = Language(
+                                    iso639_1 = languageJsonObject.optString("iso639_1", ""),
+                                    iso639_2 = languageJsonObject.optString("iso639_2", ""),
+                                    name = languageJsonObject.getString("name"),
+                                    nativeName = languageJsonObject.optString("nativeName", "name")
+                                )
+                                languages.add(language)
+                            }
+                            languages
+                        },
+                        currencies = if (countryJsonObject.isNull("currencies")) listOf() else {
+                            val currenciesJsonArray = countryJsonObject.getJSONArray("currencies")
+                            val currencies = mutableListOf<Currency>()
+                            for (j in 0 until currenciesJsonArray.length()) {
+                                val currencyJsonObject = currenciesJsonArray.getJSONObject(j)
+                                val currency = Currency(
+                                    code = currencyJsonObject.getString("code"),
+                                    name = currencyJsonObject.getString("name"),
+                                    symbol = currencyJsonObject.getString("symbol")
+                                )
+                                currencies.add(currency)
+                            }
+                            currencies
+                        }
                     )
                     countries.add(country)
                 }

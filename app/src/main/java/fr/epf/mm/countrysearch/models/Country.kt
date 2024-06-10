@@ -10,8 +10,23 @@ data class Country(
     val capital: String,
     val region: String,
     val population: Long,
-    val language: String,
-    val currency: String
+    val languages: List<Language>,
+    val currencies: List<Currency>
 ) : Parcelable {
     override fun describeContents() = 0
 }
+
+@Parcelize
+data class Currency(
+    val code: String,
+    val name: String,
+    val symbol: String
+) : Parcelable
+
+@Parcelize
+data class Language(
+    val iso639_1: String,
+    val iso639_2: String,
+    val name: String,
+    val nativeName: String
+) : Parcelable
