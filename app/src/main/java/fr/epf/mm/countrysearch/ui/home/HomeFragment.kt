@@ -8,6 +8,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import fr.epf.mm.countrysearch.databinding.FragmentHomeBinding
+import com.bumptech.glide.Glide
+import android.widget.ImageView
+import fr.epf.mm.countrysearch.R
 
 class HomeFragment : Fragment() {
 
@@ -36,8 +39,15 @@ class HomeFragment : Fragment() {
             descriptionTextView.text = it
         }
 
+
+        Glide.with(this)
+            .load(R.drawable.home_background)
+            .override(1080, 1920)
+            .into(binding.imageHome)
         return root
     }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
