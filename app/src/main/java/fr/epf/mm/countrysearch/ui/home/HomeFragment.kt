@@ -28,13 +28,18 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        val welcomeTextView: TextView = binding.textWelcome
+        homeViewModel.welcomeText.observe(viewLifecycleOwner) {
+            welcomeTextView.text = it
         }
+
+        val descriptionTextView: TextView = binding.textDescription
+        homeViewModel.descriptionText.observe(viewLifecycleOwner) {
+            descriptionTextView.text = it
+        }
+
         return root
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

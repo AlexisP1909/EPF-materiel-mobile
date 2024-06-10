@@ -1,12 +1,15 @@
 package fr.epf.mm.countrysearch.ui.countries
 
+import android.graphics.drawable.PictureDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.room.Room
+import com.caverock.androidsvg.SVG
 import fr.epf.mm.countrysearch.R
 import fr.epf.mm.countrysearch.database.CountryDatabase
 import fr.epf.mm.countrysearch.database.MIGRATION_1_2
@@ -15,8 +18,10 @@ import fr.epf.mm.countrysearch.models.Country
 import fr.epf.mm.countrysearch.models.CountryEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.net.URL
 
 class CountryDetailsFragment : Fragment() {
 
@@ -39,6 +44,7 @@ class CountryDetailsFragment : Fragment() {
         binding.populationTextView.text = country.population.toString()
         binding.languageTextView.text = country.language
         binding.currencyTextView.text = country.currency
+        loadSvg(binding.flagImageView, country.flag)
 
         val saveCountryButton = root.findViewById<Button>(R.id.saveCountryButton)
         CoroutineScope(Dispatchers.IO).launch {
@@ -86,6 +92,20 @@ class CountryDetailsFragment : Fragment() {
         }
 
         return root
+    }
+
+    private fun loadSvg(imageView: ImageView, url: String) {
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val svg = SVG.getFromInputStream(URL(url).openStream())
+                val drawable = PictureDrawable(svg.renderToPicture())
+                withContext(Dispatchers.Main) {
+                    imageView.setImageDrawable(drawable)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     override fun onDestroyView() {
