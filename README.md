@@ -1,23 +1,19 @@
-# Country Search App
+Application de Recherche de Pays COUNTRY SEARCH
 
-This is a Kotlin-based Android application that allows users to search for countries and view detailed information about them. The app uses a `SearchView` for input and displays results in a `RecyclerView`.
+Fonctionnalités
+Recherche de Pays : Les utilisateurs peuvent rechercher des pays par nom, capitale et région. La fonctionnalité de recherche est implémentée à l'aide d'une SearchView qui est développée par défaut, permettant aux utilisateurs de cliquer n'importe où sur la SearchView pour commencer à taper.
 
-## Features
+Visualiser les Détails d'un Pays : Lorsqu'un pays est sélectionné dans les résultats de recherche, l'application navigue vers une vue détaillée où plus d'informations sur le pays sont affichées. Cela inclut le drapeau du pays, qui est chargé à partir d'une URL en utilisant la bibliothèque Glide pour le chargement et la mise en cache des images.
 
-1. **Search Countries**: Users can search for countries by name, capital, and region. The search functionality is implemented using a `SearchView` that is expanded by default, allowing users to click anywhere on the `SearchView` to start typing.
+Pays Favoris : Les utilisateurs peuvent marquer des pays comme favoris pour y accéder facilement plus tard. Les pays favoris peuvent être consultés même lorsque l'appareil est hors ligne, grâce aux capacités de mise en cache de la bibliothèque Glide.
 
-2. **View Country Details**: When a country is selected from the search results, the app navigates to a detailed view where more information about the country is displayed. This includes the country's flag, which is loaded from a URL using the Glide library for image loading and caching.
+Scan de Code QR : L'application inclut une fonctionnalité pour scanner des codes QR et partager ses pays en favoris avec d'autres utilisateurs.
 
-3. **Favorite Countries**: Users can mark countries as favorites for easy access later. Favorite countries can be viewed even when the device is offline, thanks to the caching capabilities of the Glide library.
+Comment Utiliser
+Rechercher des Pays : Cliquez simplement sur le SearchView en haut de l'écran et commencez à taper le nom, la capitale ou la région du pays que vous recherchez. Les résultats de la recherche se mettront à jour en temps réel à mesure que vous tapez.
 
-4. **QR Code Scanning**: The app includes a feature to scan QR codes.
+Visualiser les Détails d'un Pays : Cliquez sur un pays dans les résultats de recherche pour voir plus de détails à son sujet. La vue détaillée inclut le drapeau du pays, qui est chargé à partir d'une URL et mis en cache pour une visualisation hors ligne.
 
-## How to Use
+Marquer un Pays comme Favori : Dans la vue détaillée d'un pays, cliquez sur le bouton "Ajouter aux Favoris" pour marquer le pays comme favori. Si vous êtes hors ligne, vous pouvez toujours voir vos pays favoris.
 
-1. **Search for Countries**: Simply click on the `SearchView` at the top of the screen and start typing the name, capital, or region of the country you're looking for. The search results will update in real-time as you type.
-
-2. **View Country Details**: Click on a country in the search results to view more details about it. The detailed view includes the country's flag, which is loaded from a URL and cached for offline viewing.
-
-3. **Mark a Country as Favorite**: In the detailed view of a country, click on the "Add to Favorites" button to mark the country as a favorite. If you're offline, you can still view your favorite countries.
-
-4. **Scan a QR Code**: Click on the "Scan QR Code" button to open the QR code scanner.
+Scanner un Code QR : Cliquez sur le bouton "Scanner le Code QR" pour ouvrir le scanner de codes QR et récupérer les pays favoris de vos amis.
