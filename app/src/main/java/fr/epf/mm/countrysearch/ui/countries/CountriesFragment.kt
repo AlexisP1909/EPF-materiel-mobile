@@ -50,7 +50,11 @@ class CountriesFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                val filteredList = fullCountryList.filter { it.name.contains(newText ?: "", ignoreCase = true) }
+                val filteredList = fullCountryList.filter {
+                    it.name.contains(newText ?: "", ignoreCase = true) ||
+                    it.capital.contains(newText ?: "", ignoreCase = true) ||
+                    it.region.contains(newText ?: "", ignoreCase = true)
+                }
                 countryAdapter.filterList(filteredList)
                 return false
             }
