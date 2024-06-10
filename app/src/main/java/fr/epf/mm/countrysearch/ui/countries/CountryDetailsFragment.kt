@@ -18,6 +18,7 @@ import fr.epf.mm.countrysearch.databinding.FragmentCountryDetailsBinding
 import fr.epf.mm.countrysearch.models.Country
 import fr.epf.mm.countrysearch.models.CountryEntity
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -96,6 +97,7 @@ class CountryDetailsFragment : Fragment() {
         return root
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun loadSvg(imageView: ImageView, url: String) {
         GlobalScope.launch(Dispatchers.IO) {
             try {

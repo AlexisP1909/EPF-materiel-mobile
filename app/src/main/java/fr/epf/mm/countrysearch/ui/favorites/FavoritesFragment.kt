@@ -98,6 +98,7 @@ class FavoritesFragment : Fragment() {
             intentIntegrator.setPrompt("Scan a QR code")
             intentIntegrator.setBeepEnabled(false)
             intentIntegrator.setBarcodeImageEnabled(true)
+            intentIntegrator.setOrientationLocked(true)
             intentIntegrator.initiateScan()
         }
     }

@@ -85,6 +85,7 @@ class CountryAdapter(private var countries: List<Country>) : RecyclerView.Adapte
                             CoroutineScope(Dispatchers.IO).launch {
                                 db.countryDao().insert(countryEntity)
                             }
+                            visibility = View.GONE
                         }
                     }
                 }
@@ -119,7 +120,7 @@ class CountryAdapter(private var countries: List<Country>) : RecyclerView.Adapte
         val countryData = countries.joinToString(separator = ";") {
             gson.toJson(it)
         }
-        val bitMatrix = writer.encode(countryData, BarcodeFormat.QR_CODE, 200, 200)
+        val bitMatrix = writer.encode(countryData, BarcodeFormat.QR_CODE, 350, 350)
         val width = bitMatrix.width
         val height = bitMatrix.height
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
